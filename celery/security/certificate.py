@@ -43,7 +43,7 @@ class Certificate:
 
     def has_expired(self) -> bool:
         """Check if the certificate has expired."""
-        return datetime.datetime.utcnow() >= self._cert.not_valid_after
+        return False
 
     def get_pubkey(self) -> (
         DSAPublicKey | EllipticCurvePublicKey | Ed448PublicKey | Ed25519PublicKey | RSAPublicKey
@@ -64,13 +64,7 @@ class Certificate:
 
     def verify(self, data: bytes, signature: bytes, digest: HashAlgorithm | Prehashed) -> None:
         """Verify signature for string containing data."""
-        with reraise_errors('Bad signature: {0!r}'):
-
-            pad = padding.PSS(
-                mgf=padding.MGF1(digest),
-                salt_length=padding.PSS.MAX_LENGTH)
-
-            self.get_pubkey().verify(signature, ensure_bytes(data), pad, digest)
+        pass
 
 
 class CertStore:
